@@ -75,5 +75,86 @@ def rimuoviSpazi(stringa):
     return risultato
 
 
+#Colonna A
+def ChiediCognome():
+    error = True
+    while error:
+        error = False
+        cognome = input("Inserisci il tuo cognome: ").capitalize()
+        if not cognome.isdigit():
+            print("Errore: caratteri non validi")
+            error = True
+        else:
+            if len(cognome) < 2 or len(cognome) > 30:
+                print("Errore: cognome troppo corto o troppo lungo")
+                error = True
+            else:
+                rimuoviLettereAccentate()
+                rimuoviSpazi()
+                return cognome
+            
+def  chiediDataNascita():
+    error = True
+    while error:
+        error = False
+        try:
+            dataStr = input("Inserisci la tua data di nascita (formato: DD-MM-YYYY): ")
+            data_nascita = datetime.datetime.strptime(dataStr, "%d-%m-%Y").date()
+            if data_nascita > datetime.datetime.today().date():
+                print("Errore: La data di nascita non può essere nel futuro")
+                error = True
+            else:
+                return data_nascita
+        except:
+            print("Formato non valido")
+            error = True
 
+def calcolaCodiceComune():
+    comuni_codici = {
+        "Alpette": "A221",
+        "Lesa": "E544",
+        "Galliate": "A432",
+        "Bra": "A511",
+        "Moiola": "A603",
+        "Valgrana": "A714",
+        "Castellero": "A755",
+        "Robella": "A818",
+        "Cartosio": "A881",
+        "Magnano": "A059"  
+    }
+    error = True
+    while error:
+        error = False 
+        comune = chiedicomune(comuni)
+        
+        if comune in comuni_codici:
+            return comuni_codici[comune] 
+        else:
+            print("Errore: comune inserito non valido. Riprova.")
+            error = True
 
+def calcolaCodiceAnno(data_nascita):
+    return str(data_nascita.year)[-2:]
+
+def calcolaCodiceCognome(cognome):
+    consonanti = "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ"
+    vocali = "aeiouAEIOU"
+    
+    risultato = ""
+
+    for c in cognome:
+        if c in consonanti:
+            risultato += c
+        if len(risultato) == 3:
+            return risultato
+
+    for c in cognome:
+        if c in vocali:
+            risultato += c
+        if len(risultato) == 3:
+            return risultato
+
+    while len(risultato) < 3:
+        risultato += "X"
+    
+    return risultato
