@@ -2,9 +2,6 @@
 import datetime
 #COLONNA C
 
-comuni = {
-    "Alpette","Lesa" ,"Galliate" ,"Bra","Moiola" ,"Valgrana","Castellero" ,"Robella" ,"Cartosio" , "Bergamo" 
-}
 def rimuoviLettereAccentate(s):
     sostituzioni = {
         'à': 'a', 'è': 'e', 'ì': 'i', 'ò': 'o', 'ù': 'u',
@@ -25,12 +22,12 @@ def chiedicomune(comuni):
     stop = True
     while stop:
         stop = False
-        comune = input("inserisci il comune: ").capitalize()
+        comune = input("inserisci il comune: ").lower().strip().capitalize()
         if comune in comuni:
-            stop = True
             return comune
         else:
-            print("Errore, il comune non e valido")
+            stop = True
+            print("Errore, comune non trovato")
 
 def calcolaCodiceMese(data):
     alfabeto = ("A", "B" ,"C", "D", "E", "H", "L", "M", "P", "R", "S", "T")
@@ -48,10 +45,18 @@ def calcolaCodiceNome(nome):
     risultato = ""
     count = 0
 
+    cons = 0
     for c in nome:
         if c in consonanti:
-            risultato += c
-            count += 1
+            cons += 1
+    
+    ind = 0
+    for c in nome:
+        if c in consonanti:
+            ind += 1
+            if not(cons >= 4 and ind == 3):
+                risultato += c
+                count += 1
         if count == 3:
             return risultato
 
@@ -61,8 +66,12 @@ def calcolaCodiceNome(nome):
             count += 1
         if count == 3:
             return risultato
+        
+    while len(risultato) < 3:
+        risultato += "X"
 
     return risultato
+
 
 
 def rimuoviSpazi(stringa):
@@ -114,22 +123,16 @@ def calcolaCodiceComune():
         "Galliate": "A432",
         "Bra": "A511",
         "Moiola": "A603",
-        "Valgrana": "A714",
-        "Castellero": "A755",
-        "Robella": "A818",
-        "Cartosio": "A881",
+        "Dalmine": "D245",
+        "Ponte san pietro": "G856",
+        "Gazzaniga": "D952",
+        "Zingonia": "L753",
         "Bergamo": "A794"  
     }
-    error = True
-    while error:
-        error = False 
-        comune = chiedicomune(comuni)
-        
-        if comune in comuni_codici:
-            return comuni_codici[comune] 
-        else:
-            print("Errore: comune inserito non valido. Riprova.")
-            error = True
+
+    comune = chiedicomune(comuni_codici.keys())
+    return comuni_codici[comune] 
+
 
 def calcolaCodiceAnno(data_nascita):
     return str(data_nascita.year)[-2:]

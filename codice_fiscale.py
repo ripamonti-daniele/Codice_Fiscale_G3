@@ -4,16 +4,22 @@ from funzioni import *
 from os import system
 system("cls")
 
-cognome = ChiediCognome()
-nome = chiediNome()
-data = chiediDataNascita()
-sesso = chiediSesso()
-c_cognome = calcolaCodiceCognome(cognome)
-c_nome = calcolaCodiceNome(nome)
-c_anno = calcolaCodiceAnno(data)
-c_mese = calcolaCodiceMese(data)
-c_giorno = calcolaCodiceGiorno(data, sesso)
-c_comune = calcolaCodiceComune()
-codice = (c_cognome + c_nome + c_anno + c_mese + c_giorno + c_comune).upper()
-c_controllo = calcolaCodiceControllo(codice)
-print(codice + c_controllo)
+def crea_codice():
+    codice = ""
+    cognome = ChiediCognome()
+    nome = chiediNome()
+    data = chiediDataNascita()
+    sesso = chiediSesso()
+    codice += calcolaCodiceCognome(cognome)
+    codice += calcolaCodiceNome(nome)
+    codice += calcolaCodiceAnno(data)
+    codice += calcolaCodiceMese(data)
+    codice += calcolaCodiceGiorno(data, sesso)
+    codice += calcolaCodiceComune()
+    codice = codice.upper()
+    codice += calcolaCodiceControllo(codice)
+    
+    return codice
+
+codice = crea_codice()
+print(f"il tuo codice fiscale è: {codice}")
